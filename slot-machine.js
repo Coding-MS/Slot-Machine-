@@ -66,9 +66,6 @@ const getBet = (balance, lines) => {
     }
 };
 
-let balance = desposit(); 
-const numberOfLines = getNumberOfLines(); 
-const bet = getBet(balance);
 
 // 4. Spin the slot machine 
 const spin = () => {
@@ -93,9 +90,75 @@ const spin = () => {
     return reels; 
 }; 
 
-// 5. Check if the user won 
+let balance = desposit(); 
+const numberOfLines = getNumberOfLines(); 
+const bet = getBet(balance, numberOfLines); 
+const reels = spin(); 
 
+
+// 5. Check if the user won 
+const transpose = (reels) => {
+    const rows = []; 
+
+    for (let i = 0; i < Rows; i++) {
+        rows.push([]); 
+        for (let j = 0; j < COLS; j++) {
+            rows [i].push (reels [j] [i])
+        }
+    }
+}
+const printRows = (rows) => {
+    for (const row of rows) {
+        let rowString = ""; 
+        for (const [i, symbol] of rows.entries()){
+            rowString += symbol
+            if (i != rows.length -1) {
+                rowString +=
+            }
+            console.log(rowString)
+    }
+}
 
 // 6. Give the user their winnings 
 
-// 7. Play Again 
+let winnings = 0; 
+for (let row = 0; row < lines; row++) {
+    const symbols = rows [row]; 
+    let allsame= true; 
+
+    for (const symbol of symbols) {
+        if (symbol != symbols [0]) {
+            allsame = false; 
+            break; 
+        }
+    }
+    if (allSame) {
+        winnings += bet * symbols_Values[symbols[0]]
+    }
+    return winnings; 
+}
+
+const game = () => {
+    let balance = deposit(); 
+
+    while (true) {
+        console.log("You have a balance of £" + balance); 
+        const numberOfLines =getNumberOfLines(); 
+        const bet = getBet(balance, numberOfLines); 
+        balance -= bet * numberOfLines; 
+        const reels = spin(); 
+        const rows = transpose(reels); 
+        const winnings = getWinnings(rows, bet, numberOfLines); 
+        balance += winnings; 
+        console.log("You won, £" +winnings.toString()); 
+        
+        if (balance <= 0) {
+            console.log("You ran out of money"); 
+            break; 
+        }
+        const playAgain = prompt("Do you want to play the game again (y/n)?"); 
+        if (playAgain != "y") break; 
+    }
+}; 
+
+game(); 
